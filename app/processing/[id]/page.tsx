@@ -31,6 +31,10 @@ export default function ProcessingPage() {
           router.push(`/results/${jobId}`)
           return
         }
+        if (result.status === 'awaiting_confirmation') {
+          router.push(`/analysis/${jobId}`)
+          return
+        }
         if (result.status === 'failed') {
           setError(result.errorCode || 'Processing failed')
           return

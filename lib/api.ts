@@ -55,3 +55,34 @@ export async function pollJob(jobId: string, sessionToken: string): Promise<JobR
   if (!res.ok) throw new Error('Failed to poll job')
   return res.json()
 }
+
+export interface VideoMetadata {
+  topics: string[]
+  contentType: string
+  tone: string
+  audience: string
+  language: string
+}
+
+export async function confirmJob(
+  jobId: string,
+  extraContext: string | null
+): Promise<void> {
+  const res = await fetch(`${API_BASE}/api/v1/jobs/${jobId}/confirm`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ extraContext }),
+  })
+  if (!res.ok) throw new Error('Failed to confirm job')
+}
+
+export async function getJobMetadata(jobId: string, sessionToken: string): Promise<{
+  topics: string[]
+  contentType: string
+  tone: string
+  audience: string
+}> {
+  const res = await fetch(`${API_BASE}/api/v1/jobs/${jobId}/metadata?session=${sessionToken}`)
+  if (!res.ok) throw new Error('Failed to get metadata')
+  return res.json()
+}
