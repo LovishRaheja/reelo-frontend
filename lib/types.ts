@@ -34,4 +34,5 @@ export interface ClipResponse {
   durationMs: number
   emotion: string | null
   emotionScore: number | null
+  platform: string | null
 }

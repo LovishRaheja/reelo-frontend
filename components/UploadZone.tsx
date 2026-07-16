@@ -52,7 +52,7 @@ export default function UploadZone({ onFile, disabled }: Props) {
         Drop your podcast episode here
       </p>
       <p style={{ fontSize: '14px', color: '#888' }}>
-        MP4, MOV, MP3, WAV — up to 2GB
+        MP4, MOV, MP3, WAV — up to 1GB
       </p>
     </div>
   )

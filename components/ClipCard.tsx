@@ -12,6 +12,22 @@ function formatDuration(ms: number): string {
   return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`
 }
 
+const EMOTION_EMOJI: Record<string, string> = {
+  excited:       '🔥',
+  insightful:    '💡',
+  funny:         '😂',
+  emotional:     '❤️',
+  controversial: '⚡',
+  inspiring:     '✨',
+}
+
+const PLATFORM_LABEL: Record<string, string> = {
+  linkedin:       'LinkedIn',
+  tiktok:         'TikTok',
+  instagram:      'Instagram',
+  youtube_shorts: 'YouTube Shorts',
+}
+
 export default function ClipCard({ clip }: Props) {
   const [copied, setCopied] = useState(false)
   const [downloading, setDownloading] = useState(false)
@@ -51,20 +67,48 @@ export default function ClipCard({ clip }: Props) {
     >
       <div style={{
         background: '#f4f4f2',
-        padding: '24px',
+        padding: '16px 20px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
       }}>
-        <div style={{
-          width: '36px', height: '36px', borderRadius: '50%',
-          background: '#111', display: 'flex', alignItems: 'center', justifyContent: 'center',
-        }}>
-          <span style={{ color: 'white', fontSize: '13px', fontWeight: 700 }}>
-            {clip.clipNumber}
-          </span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{
+            width: '32px', height: '32px', borderRadius: '50%',
+            background: '#111', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            flexShrink: 0,
+          }}>
+            <span style={{ color: 'white', fontSize: '12px', fontWeight: 700 }}>
+              {clip.clipNumber}
+            </span>
+          </div>
+          <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+            {clip.emotion && (
+              <span style={{
+                padding: '3px 8px',
+                background: '#fff',
+                border: '1px solid #e8e8e8',
+                borderRadius: '99px',
+                fontSize: '12px',
+                color: '#555',
+              }}>
+                {EMOTION_EMOJI[clip.emotion] ?? '🎯'} {clip.emotion}
+              </span>
+            )}
+            {clip.platform && (
+              <span style={{
+                padding: '3px 8px',
+                background: '#111',
+                borderRadius: '99px',
+                fontSize: '12px',
+                color: '#fff',
+              }}>
+                {PLATFORM_LABEL[clip.platform] ?? clip.platform}
+              </span>
+            )}
+          </div>
         </div>
-        <span style={{ fontSize: '13px', color: '#888' }}>{formatDuration(clip.durationMs)}</span>
+        <span style={{ fontSize: '12px', color: '#888', flexShrink: 0 }}>{formatDuration(clip.durationMs)}</span>
       </div>
 
       <div style={{ padding: '20px' }}>
