@@ -24,6 +24,7 @@ export default function ResultsPage() {
   }, [jobId])
 
   const clips = job?.episode?.clips ?? []
+  const reelUrl = job?.episode?.reelUrl
 
   async function downloadAll() {
     for (const clip of clips) {
@@ -36,6 +37,17 @@ export default function ResultsPage() {
       URL.revokeObjectURL(a.href)
       await new Promise(r => setTimeout(r, 600))
     }
+  }
+
+  async function downloadReel() {
+    if (!reelUrl) return
+    const response = await fetch(reelUrl)
+    const blob = await response.blob()
+    const a = document.createElement('a')
+    a.href = URL.createObjectURL(blob)
+    a.download = 'highlight_reel.mp4'
+    a.click()
+    URL.revokeObjectURL(a.href)
   }
 
   return (
@@ -78,7 +90,14 @@ export default function ResultsPage() {
 
         {clips.length > 0 && (
           <>
-            <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '32px' }} className="fade-up">
+            <div style={{
+              display: 'flex',
+              alignItems: 'flex-end',
+              justifyContent: 'space-between',
+              marginBottom: '32px',
+              flexWrap: 'wrap',
+              gap: '16px',
+            }} className="fade-up">
               <div>
                 <h1 style={{
                   fontFamily: 'DM Serif Display, serif',
@@ -92,22 +111,44 @@ export default function ResultsPage() {
                   {clips.length} clips from <em>{job?.episode?.originalFilename}</em>
                 </p>
               </div>
-              <button
-                onClick={downloadAll}
-                style={{
-                  padding: '12px 24px',
-                  background: '#111',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '10px',
-                  fontSize: '14px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                Download all
-              </button>
+              <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                {reelUrl && (
+                  <button
+                    onClick={downloadReel}
+                    style={{
+                      padding: '12px 24px',
+                      background: 'transparent',
+                      color: '#111',
+                      border: '1px solid #e8e8e8',
+                      borderRadius: '10px',
+                      fontSize: '14px',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      whiteSpace: 'nowrap',
+                      fontFamily: 'DM Sans, sans-serif',
+                    }}
+                  >
+                    ✨ Download reel
+                  </button>
+                )}
+                <button
+                  onClick={downloadAll}
+                  style={{
+                    padding: '12px 24px',
+                    background: '#111',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '10px',
+                    fontSize: '14px',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    whiteSpace: 'nowrap',
+                    fontFamily: 'DM Sans, sans-serif',
+                  }}
+                >
+                  Download all
+                </button>
+              </div>
             </div>
 
             <ClipGrid clips={clips} />

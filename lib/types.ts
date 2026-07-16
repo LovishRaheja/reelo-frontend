@@ -21,6 +21,7 @@ export interface EpisodeResponse {
   durationMs: number | null
   clips: ClipResponse[]
   createdAt: string
+  reelUrl: string | null
 }
 
 export interface ClipResponse {
