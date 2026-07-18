@@ -8,7 +8,6 @@ import { signUpload, uploadToR2, createJob } from '@/lib/api'
 import { getSessionToken } from '@/lib/session'
 
 type Stage = 'idle' | 'uploading' | 'creating' | 'error'
-
 const CLIP_OPTIONS = [3, 6, 9]
 
 export default function UploadPage() {
@@ -23,22 +22,12 @@ export default function UploadPage() {
     setFile(selected)
     setError(null)
     setStage('uploading')
-
     try {
       const session = getSessionToken()
-
-      const { uploadUrl, fileKey } = await signUpload(
-        selected.name,
-        selected.size,
-        selected.type || 'video/mp4',
-        session
-      )
-
+      const { uploadUrl, fileKey } = await signUpload(selected.name, selected.size, selected.type || 'video/mp4', session)
       await uploadToR2(uploadUrl, selected, setUploadProgress)
-
       setStage('creating')
       const job = await createJob(fileKey, selected.name, session, clipCount)
-
       router.push(`/processing/${job.id}`)
     } catch (e: unknown) {
       setStage('error')
@@ -47,138 +36,78 @@ export default function UploadPage() {
   }
 
   return (
-    <main style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <nav style={{
-        padding: '24px 40px',
-        borderBottom: '1px solid #ebebeb',
-        display: 'flex',
-        alignItems: 'center',
-      }}>
-        <span style={{ fontFamily: 'DM Serif Display, serif', fontSize: '22px', letterSpacing: '-0.5px' }}>
-          Reelo
-        </span>
+    <main style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#0d0d0d' }}>
+      <nav style={{ padding: '20px 48px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #1a1a1a' }}>
+        <span style={{ fontWeight: 700, fontSize: '18px', color: '#fff', letterSpacing: '-0.3px' }}>Reelo</span>
+        <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+          <a href="#" style={{ fontSize: '14px', color: '#888', textDecoration: 'none' }}>Sign in</a>
+          <a href="#" style={{ fontSize: '14px', padding: '8px 20px', background: '#7c3aed', color: '#fff', borderRadius: '8px', textDecoration: 'none', fontWeight: 500 }}>Get started free</a>
+        </div>
       </nav>
 
-      <div style={{
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '60px 24px',
-      }}>
-        <div style={{ maxWidth: '560px', width: '100%' }} className="fade-up">
-          <h1 style={{
-            fontFamily: 'DM Serif Display, serif',
-            fontSize: 'clamp(32px, 5vw, 48px)',
-            lineHeight: 1.15,
-            letterSpacing: '-1px',
-            marginBottom: '16px',
-            color: '#111',
-          }}>
-            Your podcast,<br />
-            <em>clip-ready</em> in minutes.
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '80px 24px 60px' }}>
+        <div style={{ maxWidth: '640px', width: '100%', textAlign: 'center' }} className="fade-up">
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '6px 14px', background: '#1a1a1a', border: '1px solid #2a2a2a', borderRadius: '99px', fontSize: '12px', color: '#888', marginBottom: '32px' }}>
+            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#7c3aed', display: 'inline-block' }}></span>
+            Powered by Whisper AI + Llama 3.1
+          </div>
+
+          <h1 style={{ fontSize: 'clamp(36px, 5vw, 60px)', fontWeight: 700, lineHeight: 1.05, letterSpacing: '-2px', marginBottom: '20px', color: '#fff' }}>
+            1 long video,<br /><span style={{ color: '#7c3aed' }}>viral clips.</span>
           </h1>
-          <p style={{ fontSize: '16px', color: '#666', marginBottom: '32px', lineHeight: 1.6 }}>
-            Upload an episode. Get shareable clips for Instagram, TikTok, and LinkedIn — automatically.
+
+          <p style={{ fontSize: '17px', color: '#666', lineHeight: 1.6, marginBottom: '48px', maxWidth: '480px', margin: '0 auto 48px' }}>
+            Upload your podcast, stream, or talk. Get ready-to-post clips for TikTok, Instagram, and LinkedIn in minutes.
           </p>
 
-          {(stage === 'idle' || stage === 'error') && (
-            <div style={{ marginBottom: '24px' }}>
-              <p style={{ fontSize: '13px', fontWeight: 600, color: '#555', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                How many clips?
-              </p>
-              <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                {CLIP_OPTIONS.map(n => (
-                  <button
-                    key={n}
-                    onClick={() => setClipCount(n)}
-                    style={{
-                      padding: '10px 24px',
-                      borderRadius: '8px',
-                      border: clipCount === n ? '2px solid #111' : '1px solid #e8e8e8',
-                      background: clipCount === n ? '#111' : '#fff',
-                      color: clipCount === n ? '#fff' : '#555',
-                      fontSize: '14px',
-                      fontWeight: 600,
-                      cursor: 'pointer',
-                      transition: 'all 0.15s ease',
-                      fontFamily: 'DM Sans, sans-serif',
-                    }}
-                  >
-                    {n}
-                  </button>
-                ))}
-                <span style={{ fontSize: '13px', color: '#aaa' }}>clips</span>
-              </div>
-            </div>
-          )}
+          {/* Clip count */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '24px' }}>
+            <span style={{ fontSize: '13px', color: '#555' }}>Clips:</span>
+            {CLIP_OPTIONS.map(n => (
+              <button key={n} onClick={() => setClipCount(n)} style={{
+                width: '40px', height: '40px', borderRadius: '8px',
+                border: clipCount === n ? '2px solid #7c3aed' : '1px solid #222',
+                background: clipCount === n ? 'rgba(124,58,237,0.1)' : '#111',
+                color: clipCount === n ? '#a78bfa' : '#555',
+                fontSize: '14px', fontWeight: 600, cursor: 'pointer',
+              }}>{n}</button>
+            ))}
+          </div>
 
-          {stage === 'idle' && (
-            <UploadZone onFile={handleFile} />
-          )}
+          {stage === 'idle' && <UploadZone onFile={handleFile} />}
 
           {stage === 'uploading' && (
-            <div style={{
-              border: '1px solid #e8e8e8',
-              borderRadius: '12px',
-              padding: '32px',
-              background: '#fff',
-            }}>
-              <p style={{ fontSize: '14px', fontWeight: 600, marginBottom: '8px' }}>
-                {file?.name}
-              </p>
-              <p style={{ fontSize: '13px', color: '#888', marginBottom: '24px' }}>
-                {(file!.size / 1024 / 1024).toFixed(1)} MB · {clipCount} clips requested
-              </p>
-              <ProgressBar
-                value={uploadProgress}
-                label="Uploading"
-                sublabel={`${uploadProgress}%`}
-              />
+            <div style={{ background: '#111', border: '1px solid #222', borderRadius: '16px', padding: '32px', textAlign: 'left' }}>
+              <p style={{ fontSize: '14px', fontWeight: 600, color: '#fff', marginBottom: '4px' }}>{file?.name}</p>
+              <p style={{ fontSize: '13px', color: '#555', marginBottom: '24px' }}>{(file!.size / 1024 / 1024).toFixed(1)} MB · {clipCount} clips</p>
+              <ProgressBar value={uploadProgress} label="Uploading" sublabel={`${uploadProgress}%`} />
             </div>
           )}
 
           {stage === 'creating' && (
-            <div style={{
-              border: '1px solid #e8e8e8',
-              borderRadius: '12px',
-              padding: '32px',
-              background: '#fff',
-              textAlign: 'center',
-            }}>
-              <p style={{ fontSize: '15px', color: '#555' }}>Starting processing pipeline…</p>
+            <div style={{ background: '#111', border: '1px solid #222', borderRadius: '16px', padding: '32px', textAlign: 'center' }}>
+              <p style={{ fontSize: '14px', color: '#666' }}>Starting pipeline…</p>
             </div>
           )}
 
           {stage === 'error' && (
-            <div style={{
-              border: '1px solid #ffd0d0',
-              borderRadius: '12px',
-              padding: '24px',
-              background: '#fff5f5',
-              marginBottom: '16px',
-            }}>
-              <p style={{ fontSize: '14px', color: '#c00', fontWeight: 600, marginBottom: '4px' }}>Upload failed</p>
-              <p style={{ fontSize: '13px', color: '#c00' }}>{error}</p>
-            </div>
+            <>
+              <div style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.15)', borderRadius: '12px', padding: '16px', marginBottom: '16px', textAlign: 'left' }}>
+                <p style={{ fontSize: '13px', color: '#f87171' }}>{error}</p>
+              </div>
+              <UploadZone onFile={handleFile} />
+            </>
           )}
 
-          {stage === 'error' && (
-            <UploadZone onFile={handleFile} />
-          )}
+          <div style={{ display: 'flex', gap: '28px', justifyContent: 'center', marginTop: '32px', flexWrap: 'wrap' }}>
+            {['No account needed', 'Up to 1GB', 'Free to start'].map(t => (
+              <span key={t} style={{ fontSize: '13px', color: '#333', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ color: '#7c3aed' }}>✓</span> {t}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
-
-      <footer style={{
-        padding: '24px 40px',
-        borderTop: '1px solid #ebebeb',
-        textAlign: 'center',
-        fontSize: '13px',
-        color: '#bbb',
-      }}>
-        No account needed. Your clips are private to your session.
-      </footer>
     </main>
   )
 }

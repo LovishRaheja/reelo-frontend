@@ -1,25 +1,21 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 html { font-size: 16px; }
-
 body {
-  font-family: 'DM Sans', sans-serif;
-  background: #fafaf8;
-  color: #111;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #0d0d0d;
+  color: #ffffff;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
 }
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.6; transform: scale(0.85); }
-}
-
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(16px); }
+  from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
 }
-
-.fade-up {
-  animation: fadeUp 0.5s ease forwards;
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }
+.fade-up { animation: fadeUp 0.4s ease forwards; }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #0d0d0d; }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 99px; }
