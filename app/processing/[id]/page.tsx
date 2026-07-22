@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import ProgressBar from '@/components/ProgressBar'
 import StatusSteps from '@/components/StatusSteps'
+import Nav from '@/components/Nav'
 import { pollJob } from '@/lib/api'
 import { getSessionToken } from '@/lib/session'
 import type { JobResponse } from '@/lib/types'
@@ -36,9 +37,7 @@ export default function ProcessingPage() {
 
   return (
     <main style={{ minHeight: '100vh', background: '#0d0d0d', display: 'flex', flexDirection: 'column' }}>
-      <nav style={{ padding: '20px 48px', borderBottom: '1px solid #1a1a1a', display: 'flex', alignItems: 'center' }}>
-        <span style={{ fontWeight: 700, fontSize: '18px', color: '#fff' }}>Reelo</span>
-      </nav>
+      <Nav />
 
       <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '60px 24px' }}>
         <div style={{ maxWidth: '440px', width: '100%' }} className="fade-up">

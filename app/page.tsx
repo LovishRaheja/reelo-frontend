@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import UploadZone from '@/components/UploadZone'
 import ProgressBar from '@/components/ProgressBar'
+import Nav from '@/components/Nav'
 import { signUpload, uploadToR2, createJob } from '@/lib/api'
 import { getSessionToken } from '@/lib/session'
 
@@ -37,13 +38,7 @@ export default function UploadPage() {
 
   return (
     <main style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#0d0d0d' }}>
-      <nav style={{ padding: '20px 48px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #1a1a1a' }}>
-        <span style={{ fontWeight: 700, fontSize: '18px', color: '#fff', letterSpacing: '-0.3px' }}>Reelo</span>
-        <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-          <a href="#" style={{ fontSize: '14px', color: '#888', textDecoration: 'none' }}>Sign in</a>
-          <a href="#" style={{ fontSize: '14px', padding: '8px 20px', background: '#7c3aed', color: '#fff', borderRadius: '8px', textDecoration: 'none', fontWeight: 500 }}>Get started free</a>
-        </div>
-      </nav>
+      <Nav />
 
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '80px 24px 60px' }}>
         <div style={{ maxWidth: '640px', width: '100%', textAlign: 'center' }} className="fade-up">
@@ -60,7 +55,6 @@ export default function UploadPage() {
             Upload your podcast, stream, or talk. Get ready-to-post clips for TikTok, Instagram, and LinkedIn in minutes.
           </p>
 
-          {/* Clip count */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '24px' }}>
             <span style={{ fontSize: '13px', color: '#555' }}>Clips:</span>
             {CLIP_OPTIONS.map(n => (

@@ -3,8 +3,10 @@
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import ClipGrid from '@/components/ClipGrid'
+import Nav from '@/components/Nav'
 import { pollJob } from '@/lib/api'
 import { getSessionToken } from '@/lib/session'
+import { useUser } from '@/lib/useUser'
 import type { JobResponse } from '@/lib/types'
 
 export default function ResultsPage() {
@@ -13,6 +15,7 @@ export default function ResultsPage() {
   const jobId = params.id as string
   const [job, setJob] = useState<JobResponse | null>(null)
   const [loading, setLoading] = useState(true)
+  const { user } = useUser()
 
   useEffect(() => {
     if (!jobId) return
@@ -48,12 +51,7 @@ export default function ResultsPage() {
 
   return (
     <main style={{ minHeight: '100vh', background: '#0d0d0d', display: 'flex', flexDirection: 'column' }}>
-      <nav style={{ padding: '20px 48px', borderBottom: '1px solid #1a1a1a', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <span style={{ fontWeight: 700, fontSize: '18px', color: '#fff' }}>Reelo</span>
-        <button onClick={() => router.push('/')} style={{ padding: '8px 18px', background: 'transparent', border: '1px solid #222', borderRadius: '8px', fontSize: '13px', cursor: 'pointer', color: '#888', fontFamily: 'inherit' }}>
-          New video
-        </button>
-      </nav>
+      <Nav />
 
       <div style={{ flex: 1, padding: '48px', maxWidth: '1100px', margin: '0 auto', width: '100%' }}>
         {loading && <p style={{ fontSize: '14px', color: '#555' }}>Loading…</p>}
@@ -61,6 +59,31 @@ export default function ResultsPage() {
 
         {clips.length > 0 && (
           <>
+            {!user && (
+              <div style={{
+                background: 'rgba(124,58,237,0.08)',
+                border: '1px solid rgba(124,58,237,0.2)',
+                borderRadius: '12px',
+                padding: '16px 20px',
+                marginBottom: '28px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: '16px',
+              }}>
+                <div>
+                  <p style={{ fontSize: '14px', fontWeight: 600, color: '#fff', marginBottom: '2px' }}>Save your clips</p>
+                  <p style={{ fontSize: '13px', color: '#555' }}>Sign in to access your clips anytime and unlock more uploads.</p>
+                </div>
+                <a href={`/auth?next=/results/${jobId}`} style={{
+                  padding: '9px 18px', background: '#7c3aed', color: 'white',
+                  borderRadius: '8px', fontSize: '13px', fontWeight: 600,
+                  textDecoration: 'none', whiteSpace: 'nowrap',
+                }}>
+                  Save my clips →
+                </a>
+              </div>
+            )}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '36px', flexWrap: 'wrap', gap: '16px' }} className="fade-up">
               <div>
                 <h1 style={{ fontSize: '28px', fontWeight: 700, letterSpacing: '-0.5px', color: '#fff', marginBottom: '4px' }}>

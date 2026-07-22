@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { confirmJob, getJobMetadata } from '@/lib/api'
 import { getSessionToken } from '@/lib/session'
+import Nav from '@/components/Nav'
 
 const CONTENT_TYPES = ['podcast', 'interview', 'talk', 'tutorial', 'stream', 'other']
 const TONES = ['educational', 'entertaining', 'inspirational', 'controversial', 'conversational']
@@ -43,16 +44,17 @@ export default function AnalysisPage() {
   }
 
   if (loading) return (
-    <main style={{ minHeight: '100vh', background: '#0d0d0d', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <p style={{ fontSize: '14px', color: '#555' }}>Analysing your content…</p>
+    <main style={{ minHeight: '100vh', background: '#0d0d0d', display: 'flex', flexDirection: 'column' }}>
+      <Nav />
+      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <p style={{ fontSize: '14px', color: '#555' }}>Analysing your content…</p>
+      </div>
     </main>
   )
 
   return (
     <main style={{ minHeight: '100vh', background: '#0d0d0d', display: 'flex', flexDirection: 'column' }}>
-      <nav style={{ padding: '20px 48px', borderBottom: '1px solid #1a1a1a', display: 'flex', alignItems: 'center' }}>
-        <span style={{ fontWeight: 700, fontSize: '18px', color: '#fff' }}>Reelo</span>
-      </nav>
+      <Nav />
 
       <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '60px 24px' }}>
         <div style={{ maxWidth: '520px', width: '100%' }} className="fade-up">
@@ -60,7 +62,6 @@ export default function AnalysisPage() {
           <p style={{ fontSize: '14px', color: '#555', marginBottom: '32px' }}>Review what we detected and add anything we missed.</p>
 
           <div style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: '14px', padding: '28px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
-            {/* Topics */}
             <div>
               <label style={{ fontSize: '11px', fontWeight: 600, color: '#444', textTransform: 'uppercase', letterSpacing: '0.08em', display: 'block', marginBottom: '10px' }}>Topics</label>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '10px' }}>
@@ -77,7 +78,6 @@ export default function AnalysisPage() {
               </div>
             </div>
 
-            {/* Content type */}
             <div>
               <label style={{ fontSize: '11px', fontWeight: 600, color: '#444', textTransform: 'uppercase', letterSpacing: '0.08em', display: 'block', marginBottom: '10px' }}>Content type</label>
               <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
@@ -87,7 +87,6 @@ export default function AnalysisPage() {
               </div>
             </div>
 
-            {/* Tone */}
             <div>
               <label style={{ fontSize: '11px', fontWeight: 600, color: '#444', textTransform: 'uppercase', letterSpacing: '0.08em', display: 'block', marginBottom: '10px' }}>Tone</label>
               <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
@@ -97,13 +96,11 @@ export default function AnalysisPage() {
               </div>
             </div>
 
-            {/* Audience */}
             <div>
               <label style={{ fontSize: '11px', fontWeight: 600, color: '#444', textTransform: 'uppercase', letterSpacing: '0.08em', display: 'block', marginBottom: '10px' }}>Target audience</label>
               <input value={audience} onChange={e => setAudience(e.target.value)} placeholder="e.g. founders, fitness enthusiasts…" style={{ width: '100%', padding: '8px 12px', background: '#0d0d0d', border: '1px solid #222', borderRadius: '7px', fontSize: '13px', color: '#fff', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' }} />
             </div>
 
-            {/* Extra context */}
             <div>
               <label style={{ fontSize: '11px', fontWeight: 600, color: '#444', textTransform: 'uppercase', letterSpacing: '0.08em', display: 'block', marginBottom: '10px' }}>
                 Extra context <span style={{ fontWeight: 400, textTransform: 'none', letterSpacing: 0, color: '#333' }}>(optional)</span>
