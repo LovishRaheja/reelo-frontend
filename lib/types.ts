@@ -11,6 +11,7 @@ export interface JobResponse {
   progress: number
   estimatedSeconds: number | null
   errorCode: string | null
+  clipCount: number 
   episode: EpisodeResponse | null
 }
 

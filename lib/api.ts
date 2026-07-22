@@ -86,3 +86,13 @@ export async function getJobMetadata(jobId: string, sessionToken: string): Promi
   if (!res.ok) throw new Error('Failed to get metadata')
   return res.json()
 }
+
+export async function getJobHistory(accessToken: string): Promise<JobResponse[]> {
+  const res = await fetch(`${API_BASE}/api/v1/jobs/history`, {
+    headers: {
+      'Authorization': `Bearer ${accessToken}`,
+    },
+  })
+  if (!res.ok) throw new Error('Failed to fetch history')
+  return res.json()
+}
