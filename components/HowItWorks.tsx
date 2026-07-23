@@ -3,14 +3,44 @@
 export default function HowItWorks() {
   return (
     <div style={{ width: '100%', background: '#0d0d0d', borderTop: '1px solid #1a1a1a' }}>
-      <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '40px 24px' }}>
+      <style>{`
+        @keyframes clipIn {
+          from { opacity: 0; transform: translateY(12px) scale(0.95); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes reelIn {
+          from { opacity: 0; transform: translateY(8px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .clip-anim { animation: clipIn 0.5s ease forwards; opacity: 0; }
+        .clip-anim:nth-child(1) { animation-delay: 0.3s; }
+        .clip-anim:nth-child(2) { animation-delay: 0.6s; }
+        .clip-anim:nth-child(3) { animation-delay: 0.9s; }
+        .clip-anim:nth-child(4) { animation-delay: 1.2s; }
+        .clip-anim:nth-child(5) { animation-delay: 1.5s; }
+        .clip-anim:nth-child(6) { animation-delay: 1.8s; }
+        .reel-anim { animation: reelIn 0.5s ease 2.2s forwards; opacity: 0; }
+        .hiw-inner { padding: 40px 40px; }
+        .hiw-row { display: flex; align-items: flex-start; gap: 60px; margin-bottom: 40px; flex-wrap: wrap; }
+        .hiw-steps { flex: 1; min-width: 280px; text-align: left; }
+        .hiw-mockup { flex: 1; min-width: 280px; background: #111; border: 1px solid #1a1a1a; border-radius: 20px; padding: 24px; }
+        .hiw-pills { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+        @media (max-width: 700px) {
+          .hiw-inner { padding: 60px 20px !important; }
+          .hiw-row { flex-direction: column !important; gap: 40px !important; }
+          .hiw-steps { min-width: unset !important; width: 100% !important; }
+          .hiw-mockup { min-width: unset !important; width: 100% !important; }
+        }
+      `}</style>
+
+      <div className="hiw-inner" style={{ maxWidth: '1100px', margin: '0 auto' }}>
 
         {/* Section header */}
         <div style={{ textAlign: 'center', marginBottom: '40px' }}>
           <p style={{ fontSize: '11px', fontWeight: 600, color: '#7c3aed', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '12px' }}>
             How it works
           </p>
-          <h2 style={{ fontSize: 'clamp(32px, 4vw, 48px)', fontWeight: 700, color: '#fff', letterSpacing: '-1.5px', lineHeight: 1.1, marginBottom: '16px' }}>
+          <h2 style={{ fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: 700, color: '#fff', letterSpacing: '-1.5px', lineHeight: 1.1, marginBottom: '16px' }}>
             One upload.<br /><span style={{ color: '#7c3aed' }}>Endless clips.</span>
           </h2>
           <p style={{ fontSize: '16px', color: '#555', maxWidth: '420px', margin: '0 auto', lineHeight: 1.6 }}>
@@ -19,15 +49,10 @@ export default function HowItWorks() {
         </div>
 
         {/* Main row */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'flex-start',
-          gap: '60px',
-          marginBottom: '64px',
-        }}>
+        <div className="hiw-row">
 
           {/* Left steps */}
-          <div style={{ flex: 1, textAlign: 'left' }}>
+          <div className="hiw-steps">
             {[
               { num: '01', title: 'Upload your video', desc: 'Podcast, stream, YouTube video — up to 1GB, any format.' },
               { num: '02', title: 'AI analyses your content', desc: 'Whisper transcribes every word. Llama 3.1 finds the most engaging moments.' },
@@ -51,7 +76,7 @@ export default function HowItWorks() {
           </div>
 
           {/* Right animated mockup */}
-          <div style={{ flex: 1, background: '#111', border: '1px solid #1a1a1a', borderRadius: '20px', padding: '24px' }}>
+          <div className="hiw-mockup">
             {/* Window bar */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginBottom: '18px' }}>
               <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#333' }} />
@@ -60,25 +85,6 @@ export default function HowItWorks() {
               <div style={{ flex: 1, height: '1px', background: '#1a1a1a', marginLeft: '8px' }} />
               <span style={{ fontSize: '10px', color: '#333' }}>reelo — your clips</span>
             </div>
-
-            <style>{`
-              @keyframes clipIn {
-                from { opacity: 0; transform: translateY(12px) scale(0.95); }
-                to { opacity: 1; transform: translateY(0) scale(1); }
-              }
-              @keyframes reelIn {
-                from { opacity: 0; transform: translateY(8px); }
-                to { opacity: 1; transform: translateY(0); }
-              }
-              .clip-anim { animation: clipIn 0.5s ease forwards; opacity: 0; }
-              .clip-anim:nth-child(1) { animation-delay: 0.3s; }
-              .clip-anim:nth-child(2) { animation-delay: 0.6s; }
-              .clip-anim:nth-child(3) { animation-delay: 0.9s; }
-              .clip-anim:nth-child(4) { animation-delay: 1.2s; }
-              .clip-anim:nth-child(5) { animation-delay: 1.5s; }
-              .clip-anim:nth-child(6) { animation-delay: 1.8s; }
-              .reel-anim { animation: reelIn 0.5s ease 2.2s forwards; opacity: 0; }
-            `}</style>
 
             {/* Clips grid */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px' }}>
@@ -116,7 +122,7 @@ export default function HowItWorks() {
         </div>
 
         {/* Feature pills */}
-        <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', flexWrap: 'wrap' }}>
+        <div className="hiw-pills">
           {[
             '🎙 Whisper AI transcription',
             '🧠 Llama 3.1 semantic selection',
