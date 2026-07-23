@@ -7,6 +7,7 @@ import { getJobHistory } from '@/lib/api'
 import { useUser } from '@/lib/useUser'
 import { supabase } from '@/lib/supabase'
 import type { JobResponse } from '@/lib/types'
+import Footer from '@/components/Footer'
 
 function formatDate(dateStr: string): string {
   const date = new Date(dateStr)
@@ -172,6 +173,7 @@ export default function ReelsPage() {
           </div>
         )}
       </div>
+      <Footer />
     </main>
   )
 }

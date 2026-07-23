@@ -8,6 +8,7 @@ import { pollJob } from '@/lib/api'
 import { getSessionToken } from '@/lib/session'
 import { useUser } from '@/lib/useUser'
 import type { JobResponse } from '@/lib/types'
+import Footer from '@/components/Footer'
 
 export default function ResultsPage() {
   const params = useParams()
@@ -110,6 +111,7 @@ export default function ResultsPage() {
       <footer style={{ padding: '20px 48px', borderTop: '1px solid #1a1a1a', fontSize: '12px', color: '#333', textAlign: 'center' }}>
         Clips stored for 24 hours.
       </footer>
+      <Footer />
     </main>
   )
 }

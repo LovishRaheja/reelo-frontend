@@ -69,9 +69,9 @@ export default function AuthPage() {
             <div style={{ textAlign: 'center' }}>
               <span style={{ fontSize: '12px', color: '#333' }}>
                 By continuing you agree to our{' '}
-                <a href="#" style={{ color: '#7c3aed', textDecoration: 'none' }}>Terms</a>
+                <a href="/terms" style={{ color: '#7c3aed', textDecoration: 'none' }}>Terms</a>
                 {' '}and{' '}
-                <a href="#" style={{ color: '#7c3aed', textDecoration: 'none' }}>Privacy Policy</a>
+                <a href="/privacy" style={{ color: '#7c3aed', textDecoration: 'none' }}>Privacy Policy</a>
               </span>
             </div>
           </div>

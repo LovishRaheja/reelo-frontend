@@ -8,6 +8,7 @@ import Nav from '@/components/Nav'
 import { signUpload, uploadToR2, createJob } from '@/lib/api'
 import { getSessionToken } from '@/lib/session'
 import HowItWorks from '@/components/HowItWorks'
+import Footer from '@/components/Footer'
 
 type Stage = 'idle' | 'uploading' | 'creating' | 'error'
 const CLIP_OPTIONS = [3, 6, 9]
@@ -108,6 +109,7 @@ export default function UploadPage() {
         </div>
       </div>
       <HowItWorks />
+      <Footer />
     </main>
   )
 }

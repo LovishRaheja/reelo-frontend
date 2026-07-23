@@ -8,6 +8,7 @@ import Nav from '@/components/Nav'
 import { pollJob } from '@/lib/api'
 import { getSessionToken } from '@/lib/session'
 import type { JobResponse } from '@/lib/types'
+import Footer from '@/components/Footer'
 
 export default function ProcessingPage() {
   const router = useRouter()
@@ -66,6 +67,7 @@ export default function ProcessingPage() {
           </div>
         </div>
       </div>
+      <Footer />
     </main>
   )
 }

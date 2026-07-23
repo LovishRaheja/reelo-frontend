@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation'
 import { confirmJob, getJobMetadata } from '@/lib/api'
 import { getSessionToken } from '@/lib/session'
 import Nav from '@/components/Nav'
+import Footer from '@/components/Footer'
 
 const CONTENT_TYPES = ['podcast', 'interview', 'talk', 'tutorial', 'stream', 'other']
 const TONES = ['educational', 'entertaining', 'inspirational', 'controversial', 'conversational']
@@ -116,6 +117,7 @@ export default function AnalysisPage() {
           </div>
         </div>
       </div>
+      <Footer />
     </main>
   )
 }
