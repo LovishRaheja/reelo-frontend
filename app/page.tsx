@@ -7,6 +7,7 @@ import ProgressBar from '@/components/ProgressBar'
 import Nav from '@/components/Nav'
 import { signUpload, uploadToR2, createJob } from '@/lib/api'
 import { getSessionToken } from '@/lib/session'
+import HowItWorks from '@/components/HowItWorks'
 
 type Stage = 'idle' | 'uploading' | 'creating' | 'error'
 const CLIP_OPTIONS = [3, 6, 9]
@@ -40,18 +41,18 @@ export default function UploadPage() {
     <main style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#0d0d0d' }}>
       <Nav />
 
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '80px 24px 60px' }}>
-        <div style={{ maxWidth: '640px', width: '100%', textAlign: 'center' }} className="fade-up">
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '40px 24px 40px' }}>
+        <div style={{ maxWidth: '1200px', width: '100%', textAlign: 'center' }} className="fade-up">
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '6px 14px', background: '#1a1a1a', border: '1px solid #2a2a2a', borderRadius: '99px', fontSize: '12px', color: '#888', marginBottom: '32px' }}>
             <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#7c3aed', display: 'inline-block' }}></span>
             Powered by Whisper AI + Llama 3.1
           </div>
 
           <h1 style={{ fontSize: 'clamp(36px, 5vw, 60px)', fontWeight: 700, lineHeight: 1.05, letterSpacing: '-2px', marginBottom: '20px', color: '#fff' }}>
-            1 long video,<br /><span style={{ color: '#7c3aed' }}>viral clips.</span>
+            1 long video, <span style={{ color: '#7c3aed' }}>viral clips.</span> Create <span style={{ color: '#7c3aed' }}>10x</span> faster.
           </h1>
 
-          <p style={{ fontSize: '17px', color: '#666', lineHeight: 1.6, marginBottom: '48px', maxWidth: '480px', margin: '0 auto 48px' }}>
+          <p style={{ fontSize: '17px', color: '#666', lineHeight: 1.6, marginBottom: '48px', maxWidth: '640px', margin: '0 auto 48px' }}>
             Upload your podcast, stream, or talk. Get ready-to-post clips for TikTok, Instagram, and LinkedIn in minutes.
           </p>
 
@@ -68,30 +69,34 @@ export default function UploadPage() {
             ))}
           </div>
 
-          {stage === 'idle' && <UploadZone onFile={handleFile} />}
+          <div style={{ maxWidth: '580px', width: '100%', margin: '0 auto' }}>
+            {stage === 'idle' && <UploadZone onFile={handleFile} />}
+          </div>
 
-          {stage === 'uploading' && (
-            <div style={{ background: '#111', border: '1px solid #222', borderRadius: '16px', padding: '32px', textAlign: 'left' }}>
-              <p style={{ fontSize: '14px', fontWeight: 600, color: '#fff', marginBottom: '4px' }}>{file?.name}</p>
-              <p style={{ fontSize: '13px', color: '#555', marginBottom: '24px' }}>{(file!.size / 1024 / 1024).toFixed(1)} MB · {clipCount} clips</p>
-              <ProgressBar value={uploadProgress} label="Uploading" sublabel={`${uploadProgress}%`} />
-            </div>
-          )}
-
-          {stage === 'creating' && (
-            <div style={{ background: '#111', border: '1px solid #222', borderRadius: '16px', padding: '32px', textAlign: 'center' }}>
-              <p style={{ fontSize: '14px', color: '#666' }}>Starting pipeline…</p>
-            </div>
-          )}
-
-          {stage === 'error' && (
-            <>
-              <div style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.15)', borderRadius: '12px', padding: '16px', marginBottom: '16px', textAlign: 'left' }}>
-                <p style={{ fontSize: '13px', color: '#f87171' }}>{error}</p>
+          <div style={{ maxWidth: '580px', width: '100%', margin: '0 auto' }}>
+            {stage === 'uploading' && (
+              <div style={{ background: '#111', border: '1px solid #222', borderRadius: '16px', padding: '32px', textAlign: 'left' }}>
+                <p style={{ fontSize: '14px', fontWeight: 600, color: '#fff', marginBottom: '4px' }}>{file?.name}</p>
+                <p style={{ fontSize: '13px', color: '#555', marginBottom: '24px' }}>{(file!.size / 1024 / 1024).toFixed(1)} MB · {clipCount} clips</p>
+                <ProgressBar value={uploadProgress} label="Uploading" sublabel={`${uploadProgress}%`} />
               </div>
-              <UploadZone onFile={handleFile} />
-            </>
-          )}
+            )}
+
+            {stage === 'creating' && (
+              <div style={{ background: '#111', border: '1px solid #222', borderRadius: '16px', padding: '32px', textAlign: 'center' }}>
+                <p style={{ fontSize: '14px', color: '#666' }}>Starting pipeline…</p>
+              </div>
+            )}
+
+            {stage === 'error' && (
+              <>
+                <div style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.15)', borderRadius: '12px', padding: '16px', marginBottom: '16px', textAlign: 'left' }}>
+                  <p style={{ fontSize: '13px', color: '#f87171' }}>{error}</p>
+                </div>
+                <UploadZone onFile={handleFile} />
+              </>
+            )}
+          </div>
 
           <div style={{ display: 'flex', gap: '28px', justifyContent: 'center', marginTop: '32px', flexWrap: 'wrap' }}>
             {['No account needed', 'Up to 1GB', 'Free to start'].map(t => (
@@ -102,6 +107,7 @@ export default function UploadPage() {
           </div>
         </div>
       </div>
+      <HowItWorks />
     </main>
   )
 }
