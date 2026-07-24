@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import UploadZone from '@/components/UploadZone'
 import ProgressBar from '@/components/ProgressBar'
 import Nav from '@/components/Nav'
-import { signUpload, uploadToR2, createJob, createJobFromUrl } from '@/lib/api'
+import { signUpload, uploadToR2, createJob } from '@/lib/api'
 import { getSessionToken } from '@/lib/session'
 import HowItWorks from '@/components/HowItWorks'
 import Footer from '@/components/Footer'
@@ -20,9 +20,6 @@ export default function UploadPage() {
   const [uploadProgress, setUploadProgress] = useState(0)
   const [error, setError] = useState<string | null>(null)
   const [clipCount, setClipCount] = useState(6)
-  const [urlInput, setUrlInput] = useState('')
-  const [urlError, setUrlError] = useState<string | null>(null)
-  const [inputMode, setInputMode] = useState<'url' | 'file'>('url')
 
   async function handleFile(selected: File) {
     setFile(selected)
@@ -38,20 +35,6 @@ export default function UploadPage() {
     } catch (e: unknown) {
       setStage('error')
       setError(e instanceof Error ? e.message : 'Something went wrong')
-    }
-  }
-
-  async function handleUrl() {
-    if (!urlInput.trim()) return
-    setUrlError(null)
-    setStage('creating')
-    try {
-      const session = getSessionToken()
-      const job = await createJobFromUrl(urlInput.trim(), session, clipCount)
-      router.push(`/processing/${job.id}`)
-    } catch (e: unknown) {
-      setStage('idle')
-      setUrlError(e instanceof Error ? e.message : 'Could not process this URL')
     }
   }
 
@@ -91,81 +74,7 @@ export default function UploadPage() {
 
           <div style={{ maxWidth: '580px', width: '100%', margin: '0 auto' }}>
 
-            {stage === 'idle' && (
-              <>
-                {/* Mode toggle */}
-                <div style={{ display: 'flex', gap: '8px', marginBottom: '16px', background: '#111', border: '1px solid #1a1a1a', borderRadius: '10px', padding: '4px' }}>
-                  <button
-                    onClick={() => setInputMode('url')}
-                    style={{
-                      flex: 1, padding: '9px', borderRadius: '7px', border: 'none',
-                      background: inputMode === 'url' ? '#7c3aed' : 'transparent',
-                      color: inputMode === 'url' ? '#fff' : '#555',
-                      fontSize: '13px', fontWeight: 500, cursor: 'pointer', fontFamily: 'inherit',
-                    }}
-                  >
-                    🔗 Paste URL
-                  </button>
-                  <button
-                    onClick={() => setInputMode('file')}
-                    style={{
-                      flex: 1, padding: '9px', borderRadius: '7px', border: 'none',
-                      background: inputMode === 'file' ? '#7c3aed' : 'transparent',
-                      color: inputMode === 'file' ? '#fff' : '#555',
-                      fontSize: '13px', fontWeight: 500, cursor: 'pointer', fontFamily: 'inherit',
-                    }}
-                  >
-                    📁 Upload file
-                  </button>
-                </div>
-
-                {/* URL input */}
-                {inputMode === 'url' && (
-                  <div>
-                    <div style={{ display: 'flex', gap: '8px', marginBottom: '10px' }}>
-                      <input
-                        value={urlInput}
-                        onChange={e => { setUrlInput(e.target.value); setUrlError(null) }}
-                        onKeyDown={e => e.key === 'Enter' && handleUrl()}
-                        placeholder="https://www.youtube.com/watch?v=..."
-                        style={{
-                          flex: 1, padding: '13px 16px',
-                          background: '#111', border: '1px solid #222',
-                          borderRadius: '8px', fontSize: '13px', color: '#fff',
-                          outline: 'none', fontFamily: 'inherit',
-                        }}
-                      />
-                      <button
-                        onClick={handleUrl}
-                        disabled={!urlInput.trim()}
-                        style={{
-                          padding: '13px 20px', background: urlInput.trim() ? '#7c3aed' : '#1a1a1a',
-                          color: urlInput.trim() ? 'white' : '#444',
-                          border: 'none', borderRadius: '8px', fontSize: '13px',
-                          fontWeight: 600, cursor: urlInput.trim() ? 'pointer' : 'default',
-                          fontFamily: 'inherit', whiteSpace: 'nowrap',
-                        }}
-                      >
-                        Get clips
-                      </button>
-                    </div>
-                    <p style={{ fontSize: '11px', color: '#333', textAlign: 'left' }}>
-                      Supports YouTube, Vimeo, Loom, Twitch, Twitter, Facebook and 1000+ more. Video must be public.
-                    </p>
-                    {urlError && (
-                      <p style={{ fontSize: '12px', color: '#f87171', marginTop: '8px', textAlign: 'left' }}>{urlError}</p>
-                    )}
-                    <p style={{ fontSize: '11px', color: '#2a2a2a', marginTop: '8px', textAlign: 'left' }}>
-                      By continuing you confirm this is your own original content.{' '}
-                      <a href="/terms" style={{ color: '#555', textDecoration: 'none' }}>Terms</a>
-                    </p>
-                  </div>
-                )}
-
-                {/* File upload */}
-                {inputMode === 'file' && <UploadZone onFile={handleFile} />}
-              </>
-            )}
+            {stage === 'idle' && <UploadZone onFile={handleFile} />}
 
             {stage === 'uploading' && (
               <div style={{ background: '#111', border: '1px solid #222', borderRadius: '16px', padding: '32px', textAlign: 'left' }}>

@@ -96,24 +96,3 @@ export async function getJobHistory(accessToken: string): Promise<JobResponse[]>
   if (!res.ok) throw new Error('Failed to fetch history')
   return res.json()
 }
-
-export async function createJobFromUrl(
-  url: string,
-  sessionToken: string,
-  clipCount = 6
-): Promise<JobResponse> {
-  const filename = url.includes('youtu') ? 'YouTube video' :
-                   url.includes('vimeo') ? 'Vimeo video' : 'Video'
-  const res = await fetch(`${API_BASE}/api/v1/jobs`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      youtubeUrl: url,
-      originalFilename: filename,
-      sessionToken,
-      clipCount,
-    }),
-  })
-  if (!res.ok) throw new Error('Failed to create job')
-  return res.json()
-}
